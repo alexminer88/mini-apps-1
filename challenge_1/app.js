@@ -1,32 +1,27 @@
 
-
-// populate board
-
-
-//add event handlers for entire board
 var gameTable = document.getElementById('gameBoard');
-// var rows = gameTable.getElementByTagName("tr");
-// for (var i = 0; i < rows.length; i++) {
-// 	var currentRow = rows[i];
-// }
-// handle user clicks and place pieces alternatingly
-// I might want to handle this differently, have handler on document ready. right now my handlers are on each piece, dunno if that is correct
-// initialize first player
+
 var piece = 'x';
 var piecesPlaced = 0;
 document.getElementById('current-player').innerHTML = (`Current Player: ${piece}`);
 var consoleLoggingEventListener = function () {
 	// only able to place a piece if there is nothing in the tile
 	if (this.innerHTML === '') {
+
+
 		// alternate pieces
 		this.innerHTML = piece;
+
+		// evaluate game on just placed piece
+		evaluteGameState(event.target.id, piece);
+
+		//alternate piece type
 		if (piece === 'x') {
 			piece = 'o';
-		} else if (piece === 'o') {
+		} else if (piece === 'o') {;
 			piece = 'x';
 		}
-
-		evaluteGameState();
+		
 		//show current player
 		if (piecesPlaced < 8) {
 			document.getElementById('current-player').innerHTML = (`Current Player: ${piece}`);
@@ -51,20 +46,41 @@ for (var k = 0; k < tableElements.length; k++) {
 var currentPlayer = function() {
 	// every time this is called, should alternate a symbol
 	var start = 'x';
-
 	return 
 }
 
 // after each piece is placed, make a check to see if someone has won or if there is a tie
 	// when someone wins display the winner
-var evaluteGameState = function () {
+var game = [[[''],[''],['']],[[''],[''],['']],[[''],[''],['']]];
+var evaluteGameState = function (locationString, value) {
+	var locationArr = locationString.split(',');
+	// console.log('placed at ', JSON.stringify(locationArr), 'with a ', value);
+
 	// have an internal version of game state
-	var game = [[],[],[]];
+	
+	// place
+	var x = locationArr[0];
+	var y = locationArr[1];
+	game[x][y] = value;
+	// console.log(value)
+	console.log(game);
 	// after each placement
-	// check to see if board contains three in a row, either by row, column, or diagonal
-		//check rows
+	//iterate through x row and check if all values match
+	var winner = false;
+	var rowMatches = 0
+	for(var j = 0; j < 3; j++) {
+		if (value === game[x][j]){
+			rowMatches++
+		} 
+		if (rowMatches === 3) {
+			var winner = true;
+			console.log('you are a winrar!');
+		}
+	}
+
+	
 	// also check if board is full
-	// when condition is met, declar who is the winner and prompt with a reset
+	// when condition is met, declare who is the winner and prompt with a reset
 }
 
 
@@ -75,6 +91,7 @@ var resetGame = function() {
 		console.log('clearing!')
 		tableElements[i].innerHTML = '';
 	}
+	game = [[[''],[''],['']],[[''],[''],['']],[[''],[''],['']]];
 }
 resetButton.addEventListener("click", resetGame);
 
