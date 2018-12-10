@@ -10,18 +10,47 @@ var gameTable = document.getElementById('gameBoard');
 // 	var currentRow = rows[i];
 // }
 
+
+// handle user clicks and place pieces alternatingly
+var consoleLoggingEventListener = function () {
+	console.log(this);
+	// this.innerHTML('x');
+	console.log("I was clicked!");
+}
+
 //do I even have to do this, I think I can just access all td's and jsut add eventhandlers to each of them
 var tableElements = document.getElementsByTagName("td");
 for (var k = 0; k < tableElements.length; k++) {
-	console.log('test inside for loop');
 	currentTd = tableElements[k];
-	currentTd.innerHTML = "hi"; //this is currently working
+	// currentTd.addEventListener("click", consoleLoggingEventListener.bind(currentTd)); // this is one way of doing it, I am going to try doing it with an anon func
+	currentTd.addEventListener("click", function() {
+		var currentPiece = '0';
+
+		
+
+		if (currentPiece === 'x') {
+			currentPiece = 'o';
+		} else if (currentPiece === 'o') {
+			currentPiece = 'x';
+		}
+		this.innerHTML = currentPiece;
+		console.log(currentPiece);
+	});
+	// currentTd.addEventListener("click", consoleLoggingEventListener);
+	// currentTd.innerHTML = "hi"; //this is currently working
 }
-// handle user clicks and place pieces alternatingly
+var currentSymbol = function() {
+	// every time this is called, should alternate a symbol
+	var start = 'x';
+
+	return 
+}
 
 // switch turns for placement
 
 // after each piece is placed, make a check to see if someone has won or if there is a tie
 	// when someone wins display the winner
+var evaluteGameState = function () {
 
+}
 // have a new game button that clears the game and resets board state
