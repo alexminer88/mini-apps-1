@@ -55,21 +55,19 @@ var currentPlayer = function() {
 var game = [[[''],[''],['']],[[''],[''],['']],[[''],[''],['']]];
 var evaluteGameState = function (locationString, value) {
 	var locationArr = locationString.split(',');
-
 	var x = locationArr[0];
 	var y = locationArr[1];
 	game[x][y] = value;
 
 	// after each placement:
 	//iterate through x row and check if all values match
-	var winner = false;
 	var rowMatches = 0
 	for(var j = 0; j < 3; j++) {
 		if (value === game[x][j]){
 			rowMatches++;
 		} 
 		if (rowMatches === 3) {
-			winner = true;
+			return true;
 		}
 	}
 
@@ -80,7 +78,7 @@ var evaluteGameState = function (locationString, value) {
 			colMatches++;
 		}
 		if (colMatches === 3) {
-			winner = true;
+			return true;
 		}
 	}
 
@@ -95,7 +93,7 @@ var evaluteGameState = function (locationString, value) {
 			diagMin++;
 		}
 		if (diagMain === 3 || diagMin === 3) {
-			winner = true;
+			return true;
 		}
 	}
 
@@ -112,7 +110,7 @@ var evaluteGameState = function (locationString, value) {
 		alert('Game is a draw :(');
 		resetGame();
 	}
-	return winner;
+	return false;
 }
 
 // have a new game button that clears the game and resets board state\
