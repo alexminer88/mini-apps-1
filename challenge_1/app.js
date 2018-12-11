@@ -4,36 +4,31 @@ var gameTable = document.getElementById('gameBoard');
 var piece = 'x';
 var piecesPlaced = 0;
 var isWinner = false;
+var previousWinner = null;
 document.getElementById('current-player').innerHTML = (`Current Player: ${piece}`);
 var consoleLoggingEventListener = function () {
 	// only able to place a piece if there is nothing in the tile
-	if (this.innerHTML === '' || isWinner === true) {
-
-		// alternate pieces
+	if (this.innerHTML === '') {
+		//current piece to be placed
 		this.innerHTML = piece;
 
-		// evaluate game on just placed piece
 		isWinner = evaluteGameState(event.target.id, piece);
 		if (isWinner) {
 			document.getElementById('current-player').innerHTML = (`Current Player: ${piece} is the winner!`);
-			// alert(piece.toUpperCase(), ' is the winner');
-			//turn off ability to place pieces
+			previousWinner = piece;
+			console.log(`${piece}, you are the winner!`);
+			incrementWinnerandUpdate(previousWinner);
+			resetGame();
 			return;
 		}
-		//alternate piece type
-		if (piece === 'x') {
-			piece = 'o';
-		} else if (piece === 'o') {;
-			piece = 'x';
-		}
-		
-		//show current player
-		document.getElementById('current-player').innerHTML = (`Current Player: ${piece}`);
-		
+		piece = piece === 'x' ? 'o' :'x';
+
+		if (!isWinner) {
+			document.getElementById('current-player').innerHTML = (`Current Player: ${piece}`);			
+		}		
 	}	
 }
 
-//do I even have to do this, I think I can just access all td's and jsut add eventhandlers to each of them
 var tableElements = document.getElementsByTagName("td");
 for (var k = 0; k < tableElements.length; k++) {
 	currentTd = tableElements[k];
@@ -53,14 +48,11 @@ var game = [[[''],[''],['']],[[''],[''],['']],[[''],[''],['']]];
 var evaluteGameState = function (locationString, value) {
 	var locationArr = locationString.split(',');
 
-	// have an internal version of game state
-	
-	// place
 	var x = locationArr[0];
 	var y = locationArr[1];
 	game[x][y] = value;
 
-	// after each placement
+	// after each placement:
 	//iterate through x row and check if all values match
 	var winner = false;
 	var rowMatches = 0
@@ -70,7 +62,6 @@ var evaluteGameState = function (locationString, value) {
 		} 
 		if (rowMatches === 3) {
 			winner = true;
-			console.log(value, ', you are a winrar!');
 		}
 	}
 
@@ -82,7 +73,6 @@ var evaluteGameState = function (locationString, value) {
 		}
 		if (colMatches === 3) {
 			winner === true;
-			console.log(value, ', you are a winrar!');
 		}
 	}
 
@@ -90,7 +80,6 @@ var evaluteGameState = function (locationString, value) {
 	var diagMain = 0;
 	var diagMin = 0;
 	for (var k = 0; k < 3; k++) {
-
 		if (value === game[k][k]) {
 			diagMain++;
 		}
@@ -99,7 +88,6 @@ var evaluteGameState = function (locationString, value) {
 		}
 		if (diagMain === 3 || diagMin === 3) {
 			winner = true;
-			console.log(value, ', you are a winrar!');
 		}
 	}
 
@@ -112,23 +100,30 @@ var evaluteGameState = function (locationString, value) {
 		}
 	}
 	if (boardFullness === 9 && winner === false) {
-		console.log('Game is a draw :(');
+		document.getElementById('current-player').innerHTML = (`Game is a draw!`);
+		alert('Game is a draw :(');
+		resetGame();
 	}
-	console.log(boardFullness);
-	// when condition is met, declare who is the winner and prompt with a reset
-	console.log(winner);
 	return winner;
 }
-
 
 // have a new game button that clears the game and resets board state\
 var resetButton = document.getElementById("reset-game");
 var resetGame = function() {
 	for (var i = 0; i < tableElements.length; i++) {
-		console.log('clearing!')
 		tableElements[i].innerHTML = '';
 	}
 	game = [[[''],[''],['']],[[''],[''],['']],[[''],[''],['']]];
 }
+
 resetButton.addEventListener("click", resetGame);
 
+// increments the winner's win count and updates the dom
+// takes in the winner's piece type
+var incrementWinnerandUpdate = function(value) {
+	var currentScore = document.getElementById(`player-score-${value}`).innerText;
+	currentScore = parseInt(currentScore) + 1;
+	// currentScore++;
+	console.log(currentScore);
+	document.getElementById(`player-score-${value}`).innerText = currentScore;
+}
