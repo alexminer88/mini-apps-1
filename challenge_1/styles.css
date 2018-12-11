@@ -1,13 +1,38 @@
+body {
+	text-align: center;
+	background-image: linear-gradient(#0066ff, white);
+	background-repeat: no-repeat;
+	height: 100vh;
+	font-family: 'Arial';
+}
+
+h1 {
+	font-family: 'Sedgwick Ave Display', cursive;
+}
+
+table {
+	text-align: center;
+}
+
 table, tr, td {
 	text-align: center;
-	margin: auto 0;
-	border: 1px solid gray;
+	margin: auto;
+	border: 2px solid black;
 
 }
 
 td {
+	color: white;
 	height: 60px;
 	width: 60px;
 	text-align: center;
 	font-size: 26px;
+}
+
+td:hover {
+	background-color: teal;
+}
+
+.main-container {
+	text-align: center;
 }

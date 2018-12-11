@@ -1,10 +1,13 @@
 
 var gameTable = document.getElementById('gameBoard');
 
+
+// starting state 
 var piece = 'x';
 var piecesPlaced = 0;
 var isWinner = false;
 var previousWinner = null;
+
 document.getElementById('current-player').innerHTML = (`Current Player: ${piece}`);
 var consoleLoggingEventListener = function () {
 	// only able to place a piece if there is nothing in the tile
@@ -17,13 +20,18 @@ var consoleLoggingEventListener = function () {
 			document.getElementById('current-player').innerHTML = (`Current Player: ${piece} is the winner!`);
 			previousWinner = piece;
 			console.log(`${piece}, you are the winner!`);
-			incrementWinnerandUpdate(previousWinner);
-			resetGame();
-			return;
+			setTimeout(()=>{
+				alert(`${piece}, you are the winner!`);
+				incrementWinnerandUpdate(previousWinner);
+				resetGame();
+			}, 250);
+			
+			
 		}
-		piece = piece === 'x' ? 'o' :'x';
+		
 
 		if (!isWinner) {
+			piece = piece === 'x' ? 'o' :'x';
 			document.getElementById('current-player').innerHTML = (`Current Player: ${piece}`);			
 		}		
 	}	
@@ -72,7 +80,7 @@ var evaluteGameState = function (locationString, value) {
 			colMatches++;
 		}
 		if (colMatches === 3) {
-			winner === true;
+			winner = true;
 		}
 	}
 
@@ -114,6 +122,10 @@ var resetGame = function() {
 		tableElements[i].innerHTML = '';
 	}
 	game = [[[''],[''],['']],[[''],[''],['']],[[''],[''],['']]];
+	// resetting the game should alternate who starts first
+	//update current-player
+	piece = piece === 'x' ? 'o' :'x';
+	document.getElementById('current-player').innerHTML = (`Current Player: ${piece}`);
 }
 
 resetButton.addEventListener("click", resetGame);
@@ -127,3 +139,17 @@ var incrementWinnerandUpdate = function(value) {
 	console.log(currentScore);
 	document.getElementById(`player-score-${value}`).innerText = currentScore;
 }
+
+
+// update player names based on input field
+var updatePlayerButton = document.getElementById("update-players");
+var updatePlayerNames = function() {
+	var player1 = document.getElementById("player-name-1").value;
+	var player2 = document.getElementById("player-name-2").value;
+	document.getElementById("player-x").innerText = `${player1} (X):` || document.getElementById("player-x").innerText;
+	document.getElementById("player-o").innerText = `${player2} (O):` || document.getElementById("player-o").innerText;
+}
+
+updatePlayerButton.addEventListener("click", updatePlayerNames);
+
+

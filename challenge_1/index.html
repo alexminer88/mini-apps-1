@@ -2,40 +2,53 @@
 <html>
 <head>
 	<title>Tic Tac Toe Game</title>
+	<link href="https://fonts.googleapis.com/css?family=Sedgwick+Ave+Display" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="styles.css">
+
 </head>
 <body>
 	<h1>Tic Tac Toe</h1>
-	<h2 id="current-player">Current Player</h2>
-	<table id="gameBoard">
-		<tr>
-			<td id="0,0"></td>
-			<td id="0,1"></td>
-			<td id="0,2"></td>			
-		</tr>
-		<tr>
-			<td id="1,0"></td>
-			<td id="1,1"></td>
-			<td id="1,2"></td>
-		</tr>
-		<tr>
-			<td id="2,0"></td>
-			<td id="2,1"></td>
-			<td id="2,2"></td>
-		</tr>
-	</table>
 
-	<div>
-		<h2>Current Score</h2>
-		<div>Player X: 
-			<span id="player-score-x">0</span>
-		</div>
-		<div>Player O:
-			<span id="player-score-o">0</span>
-		</div>
+	
+	<div class="main-container">
+
+		<h2 id="current-player">Current Player</h2>
+		<table id="gameBoard">
+			<tr>
+				<td id="0,0"></td>
+				<td id="0,1"></td>
+				<td id="0,2"></td>			
+			</tr>
+			<tr>
+				<td id="1,0"></td>
+				<td id="1,1"></td>
+				<td id="1,2"></td>
+			</tr>
+			<tr>
+				<td id="2,0"></td>
+				<td id="2,1"></td>
+				<td id="2,2"></td>
+			</tr>
+		</table>
 	</div>
 
-	<button id="reset-game">Reset</button>
+	<div>
+		<h3>Score Board</h3>
+		<div id="player-x">Player X:</div>
+		<span id="player-score-x">0</span>
+		<input type="text" id="player-name-1" value="" placeholder="Player X">
+
+		<div id="player-o">Player O:</div>
+		<span id="player-score-o">0</span>
+		<input type="text" id="player-name-2" value="" placeholder="Player O">
+	</div>
+
+	<span>
+		<button id="reset-game">Reset</button>
+		<button id="update-players">Update Player Names</button>
+	</span>
+		
+
 
 	<script type="text/javascript" src="app.js"></script>
 </body>
