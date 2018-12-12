@@ -6,15 +6,18 @@
 </head>
 <body>
 	<h1>JSON to CSV Converter</h1>
-	<form action="/upload-json" method="post"> 
+	<form action="/" method="post" encType="multipart/form-data"> 
 		<div>
 			<label for="json-submission">Your JSON here:</label>
-			<textarea id="json-submission" name="userInput" rows="5" cols="30"></textarea>
+			<!-- <textarea id="json-submission" name="userInput" rows="5" cols="30"></textarea> -->
+			<input type="file" name="userInput" />
+			<input type='submit' value='Upload!' />
 		</div>
 		<div class="button">
 			<input type="submit" name="">
 		</div>
 	</form>
+	<a href="/results.csv" download>Download CSV</a>
 	
 </body>
 </html>

@@ -1,25 +1,43 @@
 var PORT = 8080;
 
 var express = require('express');
+var fileUpload = require('express-fileupload');
 var app = express();
+var path = require('path');
+var fs = require('fs');
+var util = require('util');
+
 app.use(express.static('client'));	// tells the server that any file that is requested should be found in the folder specified.
 app.use(express.urlencoded({extended: true}));
-
+app.use(fileUpload());
 
 
 app.get('/', (req, res) => {
 	res.send('Hello');
 });
 
-app.post('/upload-json', (req, res) => {
+app.post('/', (req, res) => {
 	console.log("Post Request Heard!");
-	// console.log(req.body);
+	// console.log(req);
+	// console.log(req.files);
 	// grab userInput from form data in index.html
-	var jsonUserInput = req.body.userInput;
+	// var jsonUserInput = req.body.userInput;
 	// parse json data into an object
-	var obj = JSON.parse(jsonUserInput);
+	// var obj = JSON.parse(jsonUserInput); //used for form data
+	var obj = JSON.parse(req.files.userInput.data.toString());
 	console.log(obj);
 	var x = jsonObjToCsv(obj);
+
+	var readFile = util.promisify(fs.readFile);
+	var writeFile = util.promisify(fs.writeFile);
+
+	return (writeFile(path.join(__dirname, './client/results.csv'), x, (err)=>{
+		return res.end('hello');
+	}))
+	// .then(()=>{
+
+	// })
+
 	res.send(`<!DOCTYPE html>
 <html>
 <head>
@@ -28,17 +46,18 @@ app.post('/upload-json', (req, res) => {
 </head>
 <body>
 	<h1>JSON to CSV Converter</h1>
-	<form action="/upload-json" method="post"> 
+	<form action="/" method="post" encType="multipart/form-data"> 
 		<div>
 			<label for="json-submission">Your JSON here:</label>
-			<textarea id="json-submission" name="userInput" rows="5" cols="30"></textarea>
+			<!-- <textarea id="json-submission" name="userInput" rows="5" cols="30"></textarea> -->
+			<input type="file" name="userInput" />
+			<input type='submit' value='Upload!' />
 		</div>
 		<div class="button">
 			<input type="submit" name="">
 		</div>
 	</form>
 	<div>${x}</div>
-	
 </body>
 </html>`);
 	// res.redirect('/');
@@ -97,7 +116,8 @@ var jsonObjToCsv = function(obj) {
 		return element.join(',');
 	});
 
-	csv = arr.join('</br>');
+	// csv = arr.join('</br>');
+	csv = arr.join('\n');
 	return csv;
 	// might need to parse json data with json.parse first, this turns json into an object
 }
