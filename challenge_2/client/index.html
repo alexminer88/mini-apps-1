@@ -3,18 +3,16 @@
 <head>
 	<title>JSON to CSV Converter</title>
 	<script type="text/javascript" src="app.js"></script>
-	<script type="text/javascript" src="server.js"></script> <!-- I think this is wrong -->
 </head>
 <body>
 	<h1>JSON to CSV Converter</h1>
-	<form action="/upload-json" method="post"> <!-- I think I want action to go here: ../server.js   /upload-json-->
+	<form action="/upload-json" method="post"> 
 		<div>
 			<label for="json-submission">Your JSON here:</label>
 			<textarea id="json-submission" name="userInput" rows="5" cols="30"></textarea>
 		</div>
 		<div class="button">
 			<input type="submit" name="">
-			<!-- <button type="submit">Send Your JSON</button> -->
 		</div>
 	</form>
 	

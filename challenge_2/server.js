@@ -1,19 +1,10 @@
-//Build your Express app inside server.js
-
-// Implement all the report generation logic on the server.
-
-
-// point express to my client folder
-// static files, the ones in the client I think, should be in a folder called public
 var PORT = 8080;
 
 var express = require('express');
 var app = express();
 app.use(express.static('client'));	// tells the server that any file that is requested should be found in the folder specified.
-// app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-// const bodyParser = require('body-parser');
-// app.use(bodyParser.json());
+
 
 
 app.get('/', (req, res) => {
@@ -21,30 +12,92 @@ app.get('/', (req, res) => {
 });
 
 app.post('/upload-json', (req, res) => {
-	// Post request will handle the manipulation of the data or call a function that does this
-	// the function will go from JSON to CSV, I can start writing that
-	// var text = req.query.userInput;
-	// // console.log(text);
-	// console.log("hi from post!");
-	// console.log('the input text was: ', text)
-	// res.send(text);
 	console.log("Post Request Heard!");
-	console.log(req.body);
-	res.send('HI');
+	// console.log(req.body);
+	// grab userInput from form data in index.html
+	var jsonUserInput = req.body.userInput;
+	// parse json data into an object
+	var obj = JSON.parse(jsonUserInput);
+	console.log(obj);
+	var x = jsonObjToCsv(obj);
+	res.send(`<!DOCTYPE html>
+<html>
+<head>
+	<title>JSON to CSV Converter</title>
+	<script type="text/javascript" src="app.js"></script>
+</head>
+<body>
+	<h1>JSON to CSV Converter</h1>
+	<form action="/upload-json" method="post"> 
+		<div>
+			<label for="json-submission">Your JSON here:</label>
+			<textarea id="json-submission" name="userInput" rows="5" cols="30"></textarea>
+		</div>
+		<div class="button">
+			<input type="submit" name="">
+		</div>
+	</form>
+	<div>${x}</div>
+	
+</body>
+</html>`);
 	// res.redirect('/');
 });
 
 app.listen(PORT, () => console.log(`JSON to CSV app listening on port ${PORT}!`));
 
-// var jsonToCsv = function(json) {
-// 	//maybe this isn't the best place to have this, but let us start writing it here
 
-// 	// input: json
-// 	// output: CSV
-// 	var obj = JSON.parse(json);
-// 	var csv = '';
-// 	for (var key in obj) {
+//The server must flatten the JSON hierarchy, mapping each item/object in the JSON to a single line of CSV report (see included sample output),
+//where the keys of the JSON objects will be the columns of the CSV report.
+//You may assume the JSON data has a regular structure and hierarchy (see included sample file).
+//In other words, all sibling records at a particular level of the hierarchy will have the same set of properties,
+//but child objects might not contain the same properties.
+//In all cases, every property you encounter must be present in the final CSV output.
+//You may also assume that child records in the JSON will always be in a property called `children`.
 
-// 	}
-// 	// might need to parse json data with json.parse first, this turns json into an object
-// }
+
+var jsonObjToCsv = function(obj) {
+	// create the csv that we will eventually output
+	var csv = '';
+	// create the array that will be split and joined to create the return csv
+	var arr = [];
+
+	// First create the header for the csv file, we are told that all values will match, there will be no missing entries
+	var headerArr = [];
+	for (var key in obj) {
+		if (key !== 'children') {
+			csv += key + ',';
+			
+			headerArr.push(key);
+		}
+	}
+	// add header to the main array
+	arr.push(headerArr);
+
+	// create a recursive function that will go through the JSON object to add arrays for each json object entry into the array
+	var recAdd = function(obj) {
+		var entryArr = [];
+		for (var key in obj) {
+			if (key !== 'children'){
+				entryArr.push(obj[key]);
+			}
+		}
+		arr.push(entryArr);
+
+		if (obj.hasOwnProperty('children')) {
+			obj.children.forEach((child)=>{
+				recAdd(child);
+			});
+		}
+	}
+	// call said recursive function
+	recAdd(obj);
+
+	arr = arr.map((element)=> {
+		return element.join(',');
+	});
+
+	csv = arr.join('</br>');
+	return csv;
+	// might need to parse json data with json.parse first, this turns json into an object
+}
