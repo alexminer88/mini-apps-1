@@ -34,6 +34,9 @@ app.post('/', (req, res) => {
 	return (writeFile(path.join(__dirname, './client/results.csv'), x, (err)=>{
 		return res.end('hello');
 	}))
+	.catch(()=>{
+		res.end();
+	});
 	// .then(()=>{
 
 	// })
