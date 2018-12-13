@@ -75,7 +75,8 @@ class App extends React.Component {
 				<Checkout />
 				<FormOne name={this.state.name} email={this.state.email} password={this.state.password} handleFormOneChange = {this.handleFormOneChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
 				<FormTwo line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} handleFormTwoChange = {this.handleFormTwoChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
-				<FormThree />
+				<FormThree creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode} handleFormThreeChange = {this.handleFormThreeChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
+				<PurchasePage name={this.state.name} email={this.state.email} password={this.state.password} line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode}/>
 			</div>
 		)
 	};
@@ -133,13 +134,13 @@ function FormThree(props) {
 			This will be form Three 
 			<form onSubmit = {props.handleFormThreeChange}>
 				<label>Credit Card Number</label>
-				<input type="text" name="creditCard" value={props.creditCard}/>
+				<input type="text" name="creditCard" value={props.creditCard} onChange = {props.onChangeHandlerFormOne}/>
 				<label>Expiry Data</label>
-				<input type="text" name="expiryDate" value={props.expiryDate}/>
+				<input type="text" name="expiryDate" value={props.expiryDate} onChange = {props.onChangeHandlerFormOne}/>
 				<label>CVV</label>
-				<input type="text" name="cvv" value={props.cvv} />
+				<input type="text" name="cvv" value={props.cvv} onChange = {props.onChangeHandlerFormOne}/>
 				<label>Billing Zipcode</label>
-				<input type="text" name="billingZipCode" value={props.billingZipCode}/>
+				<input type="text" name="billingZipCode" value={props.billingZipCode} onChange = {props.onChangeHandlerFormOne}/>
 				<input type="submit" value="Purchase"/>
 			</form> 
 		</div>
@@ -149,7 +150,25 @@ function FormThree(props) {
 function PurchasePage(props) {
 	return (
 		<div>
-			<div>	</div>
+			<div>Form 1 Data
+				<div>Name Given: {props.name} </div>
+				<div>Email Given: {props.email} </div>
+				<div>P/W: {props.password} </div>
+			</div>
+			<div>Form 2 Data
+				<div>Address Line 1: {props.line1}</div>
+				<div>Address Line 2: {props.line2}</div>
+				<div>City: {props.city}</div>
+				<div>State: {props.state}</div>
+				<div>Zipcode: {props.zipcode}</div>
+				<div>Phone Number: {props.phoneNumber}</div>
+			</div>
+			<div>Form 3 Data
+				<div>Credit Card Number: {props.creditCard}</div>
+				<div>Expiry Date: {props.expiryDate}</div>
+				<div>CVV: {props.cvv}</div>
+				<div>Billing Zip Code: {props.billingZipCode}</div>
+			</div>
 		</div>
 	)
 }
