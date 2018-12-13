@@ -25,31 +25,55 @@ class App extends React.Component {
 			creditCard: '',
 			expiryDate: '',
 			cvv: '',
-			billingZipCode: ''
+			billingZipCode: '',
+
+			isCheckout: true,
+			isF1: false,
+			isF2: false,
+			isF3: false,
+			isSummary: false
+
 		};
 
 		// binding handlers to this
+		this.handleCheckoutChange = this.handleCheckoutChange.bind(this);
 		this.handleFormOneChange = this.handleFormOneChange.bind(this);
 		this.handleFormTwoChange = this.handleFormTwoChange.bind(this);
 		this.handleFormThreeChange = this.handleFormThreeChange.bind(this);
+		this.handleSummaryChange = this.handleSummaryChange.bind(this);
 		this.changeHandler = this.changeHandler.bind(this);
-		this.nextForm = this.nextForm.bind(this);
+		// this.nextForm = this.nextForm.bind(this);
 		this.onChangeHandlerFormOne = this.onChangeHandlerFormOne.bind(this);
 	};
 
+	handleCheckoutChange(event) {
+		event.preventDefault();
+		this.setState({isCheckout: false});
+		this.setState({isF1: true});
+	}
+
 	handleFormOneChange(event) {
 		event.preventDefault();
+		this.setState({isF1: false});
+		this.setState({isF2: true});
 		// send state of form one to db
 		// mount next component
-
 	}
 
 	handleFormTwoChange(event) {
 		event.preventDefault();
+		this.setState({isF2: false});
+		this.setState({isF3: true});
 	}
 
 	handleFormThreeChange(event) {
 		event.preventDefault();
+		this.setState({isF3: false});
+		this.setState({isSummary: true});
+	}
+
+	handleSummaryChange(event) {
+
 	}
 
 	changeHandler(event) {
@@ -57,9 +81,9 @@ class App extends React.Component {
 		console.log(this.formOne.name);
 	}
 
-	nextForm(event) {
-		this.setState({currentForm: this.state.count + 1});
-	}
+	// nextForm(event) {
+	// 	this.setState({currentForm: this.state.count + 1});
+	// }
 
 	onChangeHandlerFormOne(event) {
 		var name = event.target.name;
@@ -69,14 +93,33 @@ class App extends React.Component {
 
 	render() {
 
+		var toRender;
+		if(this.state.isCheckout) {
+			toRender = <Checkout handleCheckoutChange = {this.handleCheckoutChange}/>
+
+		} else if (this.state.isF1) {
+			toRender = <FormOne name={this.state.name} email={this.state.email} password={this.state.password} handleFormOneChange = {this.handleFormOneChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
+				
+		} else if (this.state.isF2) {
+			toRender = <FormTwo line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} handleFormTwoChange = {this.handleFormTwoChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
+				
+		} else if (this.state.isF3) {
+			toRender = <FormThree creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode} handleFormThreeChange = {this.handleFormThreeChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
+				
+		} else if (this.state.isSummary) {
+			toRender = <PurchasePage name={this.state.name} email={this.state.email} password={this.state.password} line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode}/>
+			
+		}
+
+
+
+
+
 		return (
 			<div>
+				{toRender}
 				<h1>Shopping Checkout</h1>
-				<Checkout />
-				<FormOne name={this.state.name} email={this.state.email} password={this.state.password} handleFormOneChange = {this.handleFormOneChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
-				<FormTwo line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} handleFormTwoChange = {this.handleFormTwoChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
-				<FormThree creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode} handleFormThreeChange = {this.handleFormThreeChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
-				<PurchasePage name={this.state.name} email={this.state.email} password={this.state.password} line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode}/>
+				
 			</div>
 		)
 	};
@@ -84,7 +127,9 @@ class App extends React.Component {
 
 function Checkout(props) {
 	return(
-		<div> This will be the Checkout Button! </div>
+		<div> This will be the Checkout Button! 
+			<button onClick = {props.handleCheckoutChange} > Checkout </button>
+		</div>
 	)
 }
 
