@@ -73,7 +73,23 @@ class App extends React.Component {
 	}
 
 	handleSummaryChange(event) {
-
+		console.log('hello');
+		event.preventDefault();
+		this.setState({isSummary: false});
+		this.setState({isCheckout: true});
+		this.setState({name: ''});
+		this.setState({email: ''});
+		this.setState({password: ''});
+		this.setState({line1: ''});
+		this.setState({line2: ''});
+		this.setState({city: ''});
+		this.setState({state: ''});
+		this.setState({zipcode: ''});
+		this.setState({phoneNumber: ''});
+		this.setState({creditCard: ''});
+		this.setState({expiryDate: ''});
+		this.setState({cvv: ''});
+		this.setState({billingZipCode: ''});
 	}
 
 	changeHandler(event) {
@@ -107,19 +123,14 @@ class App extends React.Component {
 			toRender = <FormThree creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode} handleFormThreeChange = {this.handleFormThreeChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
 				
 		} else if (this.state.isSummary) {
-			toRender = <PurchasePage name={this.state.name} email={this.state.email} password={this.state.password} line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode}/>
+			toRender = <PurchasePage name={this.state.name} email={this.state.email} password={this.state.password} line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} creditCard={this.state.creditCard} expiryDate={this.state.expiryDate} cvv={this.state.cvv} billingZipCode={this.state.billingZipCode} handleSummaryChange={this.handleSummaryChange}/>
 			
 		}
 
-
-
-
-
 		return (
 			<div>
-				{toRender}
 				<h1>Shopping Checkout</h1>
-				
+				{toRender}
 			</div>
 		)
 	};
@@ -127,7 +138,7 @@ class App extends React.Component {
 
 function Checkout(props) {
 	return(
-		<div> This will be the Checkout Button! 
+		<div> Checkout Here!
 			<button onClick = {props.handleCheckoutChange} > Checkout </button>
 		</div>
 	)
@@ -138,7 +149,7 @@ function FormOne(props) {
 	return (	
 	
 		<div>
-			This will be Form One
+			Personal Information:
 			<form onSubmit = {props.handleFormOneChange}>
 				<label>Name</label>
 				<input type="text" name="name" value={props.name} onChange = {props.onChangeHandlerFormOne}/>
@@ -155,7 +166,7 @@ function FormOne(props) {
 function FormTwo(props) {
 	return (
 		<div>
-			This will be form Two 
+			Address Information:
 			<form onSubmit = {props.handleFormTwoChange}>
 				<label>Address Line 1</label>
 				<input type="text" name="line1" value={props.line1} onChange = {props.onChangeHandlerFormOne}/>
@@ -176,7 +187,7 @@ function FormTwo(props) {
 function FormThree(props) {
 	return (
 		<div>
-			This will be form Three 
+			Credit Card Information:
 			<form onSubmit = {props.handleFormThreeChange}>
 				<label>Credit Card Number</label>
 				<input type="text" name="creditCard" value={props.creditCard} onChange = {props.onChangeHandlerFormOne}/>
@@ -195,12 +206,12 @@ function FormThree(props) {
 function PurchasePage(props) {
 	return (
 		<div>
-			<div>Form 1 Data
+			<div>Personal Information:
 				<div>Name Given: {props.name} </div>
 				<div>Email Given: {props.email} </div>
 				<div>P/W: {props.password} </div>
 			</div>
-			<div>Form 2 Data
+			<div>Address Information:
 				<div>Address Line 1: {props.line1}</div>
 				<div>Address Line 2: {props.line2}</div>
 				<div>City: {props.city}</div>
@@ -208,12 +219,13 @@ function PurchasePage(props) {
 				<div>Zipcode: {props.zipcode}</div>
 				<div>Phone Number: {props.phoneNumber}</div>
 			</div>
-			<div>Form 3 Data
+			<div>Credit Card Information:
 				<div>Credit Card Number: {props.creditCard}</div>
 				<div>Expiry Date: {props.expiryDate}</div>
 				<div>CVV: {props.cvv}</div>
 				<div>Billing Zip Code: {props.billingZipCode}</div>
 			</div>
+			<button onClick = {props.handleSummaryChange} > Back to Start </button>
 		</div>
 	)
 }
