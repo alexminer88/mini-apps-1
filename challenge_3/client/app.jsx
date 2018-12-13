@@ -9,31 +9,23 @@ class App extends React.Component {
 		//these don't have to be state variables, I can have some other things be state variables,
 		// such as what we are currently displaying
 		this.state = {
-			current: '', //will show current react component
+			currentForm: 0, //will show current react component
 
-			formOne: {
-				name: '',
-				email: '',
-				password: ''
-			},
+			name: '',
+			email: '',
+			password: '',
 
-			formTwo: {
-				address: {
-					line1: '',
-					line2: '',
-					city: '',
-					state: '',
-					zipcode: ''
-				},
-				phoneNumber: ''
-			},
+			line1: '',
+			line2: '',
+			city: '',
+			state: '',
+			zipcode: '',
+			phoneNumber: '',
 
-			formThree: {
-				creditCard: '',
-				expiryDate: '',
-				cvv: '',
-				billingZipCode: ''
-			}
+			creditCard: '',
+			expiryDate: '',
+			cvv: '',
+			billingZipCode: ''
 		};
 
 		// binding handlers to this
@@ -41,27 +33,23 @@ class App extends React.Component {
 		this.handleFormTwoChange = this.handleFormTwoChange.bind(this);
 		this.handleFormThreeChange = this.handleFormThreeChange.bind(this);
 		this.changeHandler = this.changeHandler.bind(this);
+		this.nextForm = this.nextForm.bind(this);
+		this.onChangeHandlerFormOne = this.onChangeHandlerFormOne.bind(this);
 	};
 
 	handleFormOneChange(event) {
 		event.preventDefault();
-		// console.log(event.target);
-		// this.formOne = event.target.name;
-		// this.setState({formOne["name"]: event.target.name,
-		// 	formOne.email: event.target.email,
-		// 	formOne.password: event.target.password
-		// });
-		this.setState({formOne: {name:event.target.name, email:event.target.email, password:event.target.password}});
-		console.log(this.state.formOne);
-		// this.formOne[event.target];
+		// send state of form one to db
+		// mount next component
+
 	}
 
 	handleFormTwoChange(event) {
-		
+		event.preventDefault();
 	}
 
 	handleFormThreeChange(event) {
-
+		event.preventDefault();
 	}
 
 	changeHandler(event) {
@@ -69,13 +57,24 @@ class App extends React.Component {
 		console.log(this.formOne.name);
 	}
 
+	nextForm(event) {
+		this.setState({currentForm: this.state.count + 1});
+	}
+
+	onChangeHandlerFormOne(event) {
+		var name = event.target.name;
+		var value = event.target.value;
+		this.setState({[name]: value});
+	}
+
 	render() {
+
 		return (
 			<div>
-				<h1>This is Testing </h1>
+				<h1>Shopping Checkout</h1>
 				<Checkout />
-				<FormOne handleFormOneChange = {this.handleFormOneChange}/>
-				<FormTwo />
+				<FormOne name={this.state.name} email={this.state.email} password={this.state.password} handleFormOneChange = {this.handleFormOneChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
+				<FormTwo line1={this.state.line1} line2={this.state.line2} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phoneNumber={this.state.phoneNumber} handleFormTwoChange = {this.handleFormTwoChange} onChangeHandlerFormOne={this.onChangeHandlerFormOne}/>
 				<FormThree />
 			</div>
 		)
@@ -89,19 +88,18 @@ function Checkout(props) {
 }
 
 function FormOne(props) {
-		// console.log('I was triggered during render');
-	return (
-	
+		console.log('Here are my props: ', props);
+	return (	
 	
 		<div>
 			This will be Form One
 			<form onSubmit = {props.handleFormOneChange}>
 				<label>Name</label>
-				<input type="text" name="name"/>
+				<input type="text" name="name" value={props.name} onChange = {props.onChangeHandlerFormOne}/>
 				<label>Email</label>
-				<input type="text" name="email" />
+				<input type="text" name="email" value={props.email} onChange = {props.onChangeHandlerFormOne}/>
 				<label>Password</label>
-				<input type="text" name="password" />
+				<input type="text" name="password" value={props.password} onChange = {props.onChangeHandlerFormOne}/>
 				<input type="submit" value="Next" />
 			</form>
 		</div>
@@ -112,18 +110,18 @@ function FormTwo(props) {
 	return (
 		<div>
 			This will be form Two 
-			<form>
+			<form onSubmit = {props.handleFormTwoChange}>
 				<label>Address Line 1</label>
-				<input type="text" name="address-line-one" />
+				<input type="text" name="line1" value={props.line1} onChange = {props.onChangeHandlerFormOne}/>
 				<label>Address Line 2</label>
-				<input type="text" name="address-line-two" />
+				<input type="text" name="line2" value={props.line2} onChange = {props.onChangeHandlerFormOne}/>
 				<label>City</label>
-				<input type="text" name="city" />
+				<input type="text" name="city" value={props.city} onChange = {props.onChangeHandlerFormOne}/>
 				<label>Zip Code</label>
-				<input type="text" name="zipcode" />
+				<input type="text" name="zipcode" value={props.zipcode} onChange = {props.onChangeHandlerFormOne}/>
 				<label>Phone Number</label>
-				<input type="text" name="phoneNumber" />
-				<input type="submit" value="Next" onClick = {props.handleFormTwoChange}/>
+				<input type="text" name="phoneNumber" value={props.phoneNumber} onChange = {props.onChangeHandlerFormOne}/>
+				<input type="submit" value="Next"/>
 			</form>
 		</div>
 	)
@@ -133,16 +131,16 @@ function FormThree(props) {
 	return (
 		<div>
 			This will be form Three 
-			<form>
+			<form onSubmit = {props.handleFormThreeChange}>
 				<label>Credit Card Number</label>
-				<input type="text" name="creditCard" />
+				<input type="text" name="creditCard" value={props.creditCard}/>
 				<label>Expiry Data</label>
-				<input type="text" name="expiryDate" />
+				<input type="text" name="expiryDate" value={props.expiryDate}/>
 				<label>CVV</label>
-				<input type="text" name="cvv" />
+				<input type="text" name="cvv" value={props.cvv} />
 				<label>Billing Zipcode</label>
-				<input type="text" name="billingZipCode" />
-				<input type="submit" value="Purchase" onClick = {props.handleFormThreeChange}/>
+				<input type="text" name="billingZipCode" value={props.billingZipCode}/>
+				<input type="submit" value="Purchase"/>
 			</form> 
 		</div>
 	)
