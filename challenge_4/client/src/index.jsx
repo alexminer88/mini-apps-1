@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Board from './components/Board.jsx';
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -9,11 +13,11 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				Hello thar!!
+				<div>Hello thar!!</div>
+				<Board />
 			</div>
 		)
 	}
-
 }
 
 
